@@ -1,10 +1,25 @@
 package nuttapon.ball.resortball;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +39,117 @@ public class MainActivity extends AppCompatActivity {
 
         myManag = new MyManage(this);
 
+        // Delete SQLite
+        deleteSQLite();
+
+        // Syn Json to SQLite
+        synJSon();
+
     } // Main Metthod
+
+    private void synJSon() {
+
+        // Connected Http
+        StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy
+                .Builder().permitAll().build();
+        StrictMode.setThreadPolicy(threadPolicy);
+
+        int intIndex = 0;
+        while (intIndex <= 1) {
+
+            //1 Create InputSteam
+            InputStream inputStream = null;
+            String[] urlJSON = {"http://swiftcodingthai.com/ball/php_get_databall.php",
+                    "http://swiftcodingthai.com/ball/php_get_service_databall.php"};
+
+            try {
+
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urlJSON[intIndex]);
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                inputStream = httpEntity.getContent();
+
+            } catch (Exception e) {
+                Log.d("31March", "Input ==> " + e.toString());
+            }
+
+            //2 Create JSON Sting
+            String strJSON = null;
+
+            try {
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                String strLite = null;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((strLite = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(strLite);
+                }
+                inputStream.close();
+                strJSON = stringBuilder.toString();
+
+            } catch (Exception e) {
+                Log.d("31March", "strJSON ==> " + e.toString());
+            }
+
+
+            //3 Update To SQLite
+
+            try {
+                JSONArray jsonArray = new JSONArray(strJSON);
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    switch (intIndex) {
+                        case 0:
+                            // for userTABLE
+
+                            String strUser = jsonObject.getString(MyManage.column_User);
+                            String strPassword = jsonObject.getString(MyManage.column_Password);
+                            String strName = jsonObject.getString(MyManage.column_Name);
+                            String strIDcard = jsonObject.getString(MyManage.column_IDcard);
+
+                            myManag.addUser(strUser, strPassword, strName, strIDcard);
+
+                            break;
+                        case 1:
+                            // for serviceTABLE
+
+                            String strCategory = jsonObject.getString(MyManage.column_Category);
+                            String strImage1 = jsonObject.getString(MyManage.column_Image1);
+                            String strImage2 = jsonObject.getString(MyManage.column_Image2);
+                            String strImage3 = jsonObject.getString(MyManage.column_Image3);
+                            String strImage4 = jsonObject.getString(MyManage.column_Image4);
+                            String strImage5 = jsonObject.getString(MyManage.column_Image5);
+                            String strDescription = jsonObject.getString(MyManage.column_Description);
+                            String strPrice = jsonObject.getString(MyManage.column_Price);
+                            String strItem = jsonObject.getString(MyManage.column_Item);
+
+                            myManag.addService(strCategory, strImage1, strImage2,
+                                    strImage3, strImage4, strImage5, strDescription,
+                                    strPrice, strItem);
+
+                            break;
+                    }
+
+                }
+
+            } catch (Exception e) {
+                Log.d("31March", "Update ==> " + e.toString());
+            }
+
+
+            intIndex += 1;
+        }
+
+    } // SynJSON
+
+    private void deleteSQLite() {
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(MyOpenHelper.database_name,
+                MODE_PRIVATE, null);
+        sqLiteDatabase.delete(MyManage.user_table, null, null);
+        sqLiteDatabase.delete(MyManage.service_table, null, null);
+    }
 
     public void clickSignInMain(View view) {
 
