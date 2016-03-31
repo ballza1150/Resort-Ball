@@ -193,6 +193,11 @@ public class MainActivity extends AppCompatActivity {
                         "ยินดีต้อนรับ" + resultStrings[3],
                         Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(MainActivity.this, ShowServiceActivity.class);
+                intent.putExtra("NameUser", resultStrings[3]);
+                startActivity(intent);
+                finish();
+                
             } else {
                 // Password false
                 MyAlertDialog myAlertDialog = new MyAlertDialog();
