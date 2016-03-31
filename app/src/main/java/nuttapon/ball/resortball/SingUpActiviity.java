@@ -55,8 +55,10 @@ public class SingUpActiviity extends AppCompatActivity {
             myAlertDialog.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่อง");
 
 
+        } else if (idcardString.length() !=13) {
+            MyAlertDialog myAlertDialog = new MyAlertDialog();
+            myAlertDialog.myDialog(this, "รหัสประจำตัวผิด", "รหัสประจำตัว ต้องมี 13 หลักเท่านั้น");
         } else {
-            // No Space
             updateToMySQL();
         }
 

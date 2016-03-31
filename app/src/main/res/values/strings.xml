@@ -3,6 +3,7 @@
 
     <string name="signin">เข้าใช้</string>
     <string name="signup">สมัครสมาชิก</string>
+
     <string name="user">User</string>
     <string name="pass">Password</string>
     <string name="name">name</string>
