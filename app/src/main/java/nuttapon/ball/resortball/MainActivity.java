@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     // Explicit
     private EditText userEditText, passwordEditText;
     private String userString, passwordString;
+    private MyManage myManag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Bind widget
         bindWidget();
+
+        myManag = new MyManage(this);
 
     } // Main Metthod
 
