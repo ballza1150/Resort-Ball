@@ -39,6 +39,10 @@ public class SingUpActiviity extends AppCompatActivity {
         // Check Space
         if (checkSpace()) {
             // Have Space
+            MyAlertDialog myAlertDialog = new MyAlertDialog();
+            myAlertDialog.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่อง");
+
+
         } else {
             // No Space
         }
