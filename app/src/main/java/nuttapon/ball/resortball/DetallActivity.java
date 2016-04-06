@@ -1,5 +1,6 @@
 package nuttapon.ball.resortball;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,15 @@ public class DetallActivity extends AppCompatActivity {
 
 
     } // Main Method
+
+    public void clickOrder(View view) {
+        Intent intent = new Intent(DetallActivity.this, OrderActivity.class);
+        startActivity(intent);
+    } // ClickOrder
+
+    public void clickBackDetall(View view) {
+        finish();
+    }
 
     public void clickNext(View view) {
 
@@ -117,4 +127,4 @@ public class DetallActivity extends AppCompatActivity {
         priceTextView = (TextView) findViewById(R.id.textView14);
         imageView = (ImageView) findViewById(R.id.imageView3);
     }
-} // MainClass
+} // Main Class

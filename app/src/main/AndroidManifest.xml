@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".SingUpActiviity" />
         <activity android:name=".ShowServiceActivity" />
-        <activity android:name=".DetallActivity"></activity>
+        <activity android:name=".DetallActivity" />
+        <activity android:name=".OrderActivity"></activity>
     </application>
 
 </manifest>
