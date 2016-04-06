@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingUpActiviity" />
-        <activity android:name=".ShowServiceActivity"></activity>
+        <activity android:name=".ShowServiceActivity" />
+        <activity android:name=".DetallActivity"></activity>
     </application>
 
 </manifest>

@@ -1,10 +1,12 @@
 package nuttapon.ball.resortball;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,12 +41,14 @@ public class ShowServiceActivity extends AppCompatActivity {
         String[] iconStrings = new String[intCount];
         String[] priceStrings = new String[intCount];
         String[] nameStrings = new String[intCount];
+        final String[] idStrings = new String[intCount];
 
         for (int i = 0; i < intCount; i++) {
 
             iconStrings[i] = cursor.getString(cursor.getColumnIndex(MyManage.column_Image1));
             priceStrings[i] = cursor.getString(cursor.getColumnIndex(MyManage.column_Price));
             nameStrings[i] = cursor.getString(cursor.getColumnIndex(MyManage.column_Category));
+            idStrings[i] = cursor.getString(cursor.getColumnIndex(MyManage.column_id));
 
             cursor.moveToNext();
         }  // for
@@ -52,6 +56,17 @@ public class ShowServiceActivity extends AppCompatActivity {
         cursor.close();
         MyAdapter myAdapter = new MyAdapter(this, iconStrings, priceStrings, nameStrings);
         serviceListView.setAdapter(myAdapter);
+
+        serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(ShowServiceActivity.this, DetallActivity.class);
+                intent.putExtra("id", idStrings[i]);
+                startActivity(intent);
+
+            } // onItemClick
+        });
 
 
     } // Create ListView
