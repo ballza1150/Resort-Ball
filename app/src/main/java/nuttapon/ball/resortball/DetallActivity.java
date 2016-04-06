@@ -47,6 +47,7 @@ public class DetallActivity extends AppCompatActivity {
     public void clickOrder(View view) {
         Intent intent = new Intent(DetallActivity.this, OrderActivity.class);
         startActivity(intent);
+
     } // ClickOrder
 
     public void clickBackDetall(View view) {
